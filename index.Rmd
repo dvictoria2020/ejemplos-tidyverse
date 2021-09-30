@@ -83,7 +83,7 @@ slice_head(rios, n = 10)
 
 ### Select()
 
-```{r}
+```{r ejemplos-select}
 # Selección, renombramiento y conversión de columnas
 covid_columnas_seleccionadas <-
   covid %>%
@@ -100,7 +100,7 @@ slice_head(covid_columnas_seleccionadas, n = 10)
 
 ### Filter()
 
-```{r}
+```{r emjemplos-filter}
 # Selección, renombramiento, conversión de columnas y filtrado
 covid_filtrado <-
   covid %>%
@@ -114,7 +114,7 @@ slice_head(covid_filtrado, n = 20)
 
 ### arrange ()
 
-```{r}
+```{r ejemplos-arrange}
 # Selección, renombramiento, filtrado y conversión de columnas
 covid_filtrado_ordenado_x_positivos_nuevos <-
   covid %>%
@@ -125,5 +125,46 @@ covid_filtrado_ordenado_x_positivos_nuevos <-
   arrange(desc(positivos_nuevos))
 
 slice_head(covid_filtrado_ordenado_x_positivos_nuevos, n = 30)
+```
+
+## summarize()
+
+```{r ejemplos-summarize-02}
+# Selección, renombramiento, filtrado y conversión de columnas
+covid_positivos_nuevos_sumarizado_x_mes <-
+  covid %>%
+  select(FECHA, nue_posi) %>%
+  rename(fecha = FECHA, positivos_nuevos = nue_posi) %>%
+  mutate(fecha = as.Date(fecha, format = "%d/%m/%Y")) %>%
+  group_by(anio = format(fecha,"%Y"), mes = format(fecha,"%m")) %>%
+  summarise(suma_positivos = sum(positivos_nuevos))
+
+covid_positivos_nuevos_sumarizado_x_mes
+
+```
+```{r ejemplos-summarize-01}
+# Sumarizacion de casos nueves por mes 
+covid_positivos_nuevos_sumarizado_x_mes <-
+  covid %>%
+  select(FECHA, nue_posi) %>%
+  rename(fecha = FECHA, positivos_nuevos = nue_posi) %>%
+  mutate(fecha = as.Date(fecha, format = "%d/%m/%Y")) %>%
+  group_by(mes = format(fecha,"%m")) %>%
+  summarise(suma_positivos = sum(positivos_nuevos))
+
+covid_positivos_nuevos_sumarizado_x_mes
+```
+
+```{r ejemplos-summarize-03}
+# Promedio de casos por mes
+covid_positivos_nuevos_sumarizado_x_mes <-
+  covid %>%
+  select(FECHA, nue_posi) %>%
+  rename(fecha = FECHA, positivos_nuevos = nue_posi) %>%
+  mutate(fecha = as.Date(fecha, format = "%d/%m/%Y")) %>%
+  group_by(mes = format(fecha,"%m")) %>%
+  summarise(suma_positivos = mean(positivos_nuevos))
+
+covid_positivos_nuevos_sumarizado_x_mes
 ```
 
